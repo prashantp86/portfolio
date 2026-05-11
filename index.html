@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Prashant Prajapati | Backend & Distributed Systems Engineer</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #040816;
+      color: white;
+      overflow-x: hidden;
+    }
+
+    .bg-glow {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background:
+        radial-gradient(circle at top left, rgba(0, 255, 200, 0.18), transparent 25%),
+        radial-gradient(circle at top right, rgba(0, 140, 255, 0.18), transparent 25%),
+        radial-gradient(circle at bottom center, rgba(128, 0, 255, 0.15), transparent 30%),
+        #040816;
+    }
+
+    .grid-bg {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(circle at center, black 40%, transparent 85%);
+    }
+
+    .gradient-text {
+      background: linear-gradient(90deg, #00ffe0, #4facfe, #8f5cff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .glass {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(16px);
+    }
+
+    .card {
+      transition: 0.4s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-8px) scale(1.02);
+      border-color: rgba(0, 255, 200, 0.4);
+      box-shadow:
+        0 0 40px rgba(0, 255, 200, 0.12),
+        0 0 80px rgba(0, 140, 255, 0.08);
+    }
+
+    .typing {
+      overflow: hidden;
+      border-right: 3px solid #00ffe0;
+      white-space: nowrap;
+      animation:
+        typing 4s steps(40, end),
+        blink 0.8s infinite;
+    }
+
+    @keyframes typing {
+      from {
+        width: 0;
+      }
+
+      to {
+        width: 100%;
+      }
+    }
+
+    @keyframes blink {
+      50% {
+        border-color: transparent;
+      }
+    }
+
+    .floating {
+      animation: floating 5s ease-in-out infinite;
+    }
+
+    @keyframes floating {
+      0% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-12px);
+      }
+
+      100% {
+        transform: translateY(0px);
+      }
+    }
+
+    .pulse {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 rgba(0, 255, 200, 0.4);
+      }
+
+      50% {
+        box-shadow: 0 0 40px rgba(0, 255, 200, 0.4);
+      }
+
+      100% {
+        box-shadow: 0 0 0 rgba(0, 255, 200, 0.4);
+      }
+    }
+
+    .timeline-line {
+      position: absolute;
+      left: 16px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, #00ffe0, #4facfe, #8f5cff);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="bg-glow"></div>
+  <div class="grid-bg"></div>
+
+  <!-- NAVBAR -->
+
+  <nav
+    class="fixed top-0 left-0 w-full z-50 border-b border-white/5 backdrop-blur-xl bg-black/20">
+
+    <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+
+      <h1 class="text-2xl font-black gradient-text">
+        PRASHANT
+      </h1>
+
+      <div class="hidden md:flex gap-8 text-sm text-gray-300">
+
+        <a href="#about" class="hover:text-cyan-300 transition">About</a>
+        <a href="#impact" class="hover:text-cyan-300 transition">Impact</a>
+        <a href="#experience" class="hover:text-cyan-300 transition">Experience</a>
+        <a href="#skills" class="hover:text-cyan-300 transition">Skills</a>
+        <a href="#contact" class="hover:text-cyan-300 transition">Contact</a>
+
+      </div>
+
+    </div>
+
+  </nav>
+
+  <!-- HERO -->
+
+  <section class="min-h-screen flex items-center px-6 pt-24">
+
+    <div
+      class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+
+      <div>
+
+        <p
+          class="uppercase tracking-[6px] text-cyan-300 text-sm mb-6">
+
+          Lead Software Engineer • Samsung R&D Institute Delhi
+
+        </p>
+
+        <h1
+          class="text-5xl md:text-7xl font-black leading-tight mb-8">
+
+          Backend Engineer <br>
+
+          Building
+          <span class="gradient-text">
+            Distributed Systems
+          </span>
+
+          At Scale
+
+        </h1>
+
+        <div
+          class="typing text-xl text-gray-300 mb-10 max-w-2xl">
+
+          Java • Spring Boot • AWS • Microservices • Concurrency
+
+        </div>
+
+        <p
+          class="text-gray-400 text-lg leading-9 max-w-2xl mb-12">
+
+          Specialized in high throughput backend systems,
+          distributed indexing platforms, serverless
+          architectures and performance engineering.
+          Delivered $1M+ infrastructure savings and
+          18x performance improvements at Samsung R&D Institute Delhi.
+        </p>
+
+        <div class="flex flex-wrap gap-5">
+
+          <a href="#contact"
+            class="px-8 py-4 rounded-2xl bg-cyan-300 text-black font-bold hover:scale-105 transition pulse">
+
+            Contact Me
+
+          </a>
+
+          <a href="https://github.com/"
+            target="_blank"
+            class="px-8 py-4 rounded-2xl glass border border-white/10 hover:border-cyan-300 transition">
+
+            GitHub
+
+          </a>
+
+          <a href="https://linkedin.com/"
+            target="_blank"
+            class="px-8 py-4 rounded-2xl glass border border-white/10 hover:border-cyan-300 transition">
+
+            LinkedIn
+
+          </a>
+
+        </div>
+
+        <!-- METRICS -->
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16">
+
+          <div>
+            <h2 class="text-4xl font-black gradient-text">
+              $1M+
+            </h2>
+            <p class="text-gray-400 mt-2 text-sm">
+              Annual Savings
+            </p>
+          </div>
+
+          <div>
+            <h2 class="text-4xl font-black gradient-text">
+              18x
+            </h2>
+            <p class="text-gray-400 mt-2 text-sm">
+              Faster Indexing
+            </p>
+          </div>
+
+          <div>
+            <h2 class="text-4xl font-black gradient-text">
+              7000h+
+            </h2>
+            <p class="text-gray-400 mt-2 text-sm">
+              Indexed Content
+            </p>
+          </div>
+
+          <div>
+            <h2 class="text-4xl font-black gradient-text">
+              4+
+            </h2>
+            <p class="text-gray-400 mt-2 text-sm">
+              Years Experience
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- RIGHT -->
+
+      <div class="relative flex justify-center">
+
+        <div
+          class="glass rounded-[40px] p-10 max-w-xl w-full floating">
+
+<pre class="text-sm text-cyan-200 leading-8 overflow-x-auto">
+BackendEngineer engineer = new BackendEngineer();
+
+engineer.skills(
+    "Java",
+    "Spring Boot",
+    "AWS",
+    "Distributed Systems",
+    "Concurrency",
+    "Microservices"
+);
+
+engineer.achievements(
+    "$1M+ cost savings",
+    "18x performance boost",
+    "Serverless migration",
+    "Lock-free architecture"
+);
+
+engineer.build();
+</pre>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ABOUT -->
+
+  <section id="about" class="py-32 px-6">
+
+    <div class="max-w-7xl mx-auto">
+
+      <div class="mb-16">
+
+        <p class="uppercase tracking-[6px] text-cyan-300 mb-4">
+          About
+        </p>
+
+        <h2 class="text-5xl font-black">
+          Engineering
+          <span class="gradient-text">
+            Reliable Backend Systems
+          </span>
+        </h2>
+
+      </div>
+
+      <div class="grid lg:grid-cols-3 gap-8">
+
+        <div class="glass rounded-[32px] p-10 card">
+
+          <h3 class="text-2xl font-bold mb-6">
+            Backend Engineering
+          </h3>
+
+          <p class="text-gray-300 leading-8">
+            Designing scalable REST APIs, microservices,
+            indexing systems and high throughput backend
+            services using Java and Spring Boot.
+          </p>
+
+        </div>
+
+        <div class="glass rounded-[32px] p-10 card">
+
+          <h3 class="text-2xl font-bold mb-6">
+            Distributed Systems
+          </h3>
+
+          <p class="text-gray-300 leading-8">
+            Building lock-free systems, multithreaded
+            processing pipelines and horizontally scalable
+            architectures for large scale content processing.
+          </p>
+
+        </div>
+
+        <div class="glass rounded-[32px] p-10 card">
+
+          <h3 class="text-2xl font-bold mb-6">
+            Cloud & DevOps
+          </h3>
+
+          <p class="text-gray-300 leading-8">
+            AWS serverless architecture, ECS deployment,
+            observability, CI/CD automation and cloud
+            infrastructure optimization.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- IMPACT -->
+
+  <section id="impact" class="py-32 px-6">
+
+    <div class="max-w-7xl mx-auto">
+
+      <div class="mb-20">
+
+        <p class="uppercase tracking-[6px] text-cyan-300 mb-4">
+          Engineering Impact
+        </p>
+
+        <h2 class="text-5xl font-black">
+
+          Real
+          <span class="gradient-text">
+            Production Scale Results
+          </span>
+
+        </h2>
+
+      </div>
+
+      <div class="grid md:grid-cols-2 xl:grid-cols-4 gap-8">
+
+        <div class="glass rounded-[32px] p-10 card">
+          <h2 class="text-5xl font-black gradient-text mb-5">
+            $1M+
+          </h2>
+
+          <p class="text-gray-300 leading-7">
+            Infrastructure savings achieved through
+            lock-free architecture redesign.
+          </p>
+        </div>
+
+        <div class="glass rounded-[32px] p-10 card">
+          <h2 class="text-5xl font-black gradient-text mb-5">
+            18x
+          </h2>
+
+          <p class="text-gray-300 leading-7">
+            Reduced indexing time from
+            90 minutes to 5 minutes.
+          </p>
+        </div>
+
+        <div class="glass rounded-[32px] p-10 card">
+          <h2 class="text-5xl font-black gradient-text mb-5">
+            14x
+          </h2>
+
+          <p class="text-gray-300 leading-7">
+            Increased content indexing
+            throughput using sharding architecture.
+          </p>
+        </div>
+
+        <div class="glass rounded-[32px] p-10 card">
+          <h2 class="text-5xl font-black gradient-text mb-5">
+            18
+          </h2>
+
+          <p class="text-gray-300 leading-7">
+            EC2 instances removed via
+            AWS serverless migration.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- EXPERIENCE -->
+
+  <section id="experience" class="py-32 px-6">
+
+    <div class="max-w-6xl mx-auto">
+
+      <div class="mb-20">
+
+        <p class="uppercase tracking-[6px] text-cyan-300 mb-4">
+          Experience
+        </p>
+
+        <h2 class="text-5xl font-black">
+          Career
+          <span class="gradient-text">
+            Timeline
+          </span>
+        </h2>
+
+      </div>
+
+      <div class="relative pl-16">
+
+        <div class="timeline-line"></div>
+
+        <!-- ITEM -->
+
+        <div class="relative mb-16">
+
+          <div
+            class="absolute left-[-56px] top-2 w-8 h-8 rounded-full bg-cyan-300">
+          </div>
+
+          <div class="glass rounded-[32px] p-10 card">
+
+            <div
+              class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+
+              <div>
+
+                <h3 class="text-3xl font-bold">
+                  Lead Software Engineer
+                </h3>
+
+                <p class="text-cyan-300 mt-2">
+                  Samsung R&D Institute Delhi
+                </p>
+
+              </div>
+
+              <span
+                class="text-gray-400 text-sm">
+
+                March 2026 - Present
+
+              </span>
+
+            </div>
+
+            <p class="text-gray-300 leading-8">
+              Building backend services and distributed
+              processing systems for AI context generation
+              pipelines, video ingestion and inference workflows.
+            </p>
+
+          </div>
+
+        </div>
+
+        <!-- ITEM -->
+
+        <div class="relative mb-16">
+
+          <div
+            class="absolute left-[-56px] top-2 w-8 h-8 rounded-full bg-purple-400">
+          </div>
+
+          <div class="glass rounded-[32px] p-10 card">
+
+            <div
+              class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+
+              <div>
+
+                <h3 class="text-3xl font-bold">
+                  Software Engineer
+                </h3>
+
+                <p class="text-cyan-300 mt-2">
+                  Samsung R&D Institute Delhi
+                </p>
+
+              </div>
+
+              <span
+                class="text-gray-400 text-sm">
+
+                July 2022 - Feb 2026
+
+              </span>
+
+            </div>
+
+            <p class="text-gray-300 leading-8">
+              Redesigned distributed indexing platform,
+              implemented sharding architecture,
+              migrated systems to AWS serverless infrastructure
+              and modernized backend modules from Java 8 to Java 17.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- SKILLS -->
+
+  <section id="skills" class="py-32 px-6">
+
+    <div class="max-w-7xl mx-auto">
+
+      <div class="mb-20">
+
+        <p class="uppercase tracking-[6px] text-cyan-300 mb-4">
+          Core Skills
+        </p>
+
+        <h2 class="text-5xl font-black">
+
+          Technology
+          <span class="gradient-text">
+            Stack
+          </span>
+
+        </h2>
+
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+        <div class="glass rounded-[32px] p-10 card">
+
+          <h3 class="text-2xl font-bold mb-8">
+            Languages
+          </h3>
+
+          <div class="space-y-4 text-gray-300">
+            <p>Java</p>
+            <p>Python</p>
+            <p>C++</p>
+            <p>Bash</p>
+          </div>
+
+        </div>
+
+        <div class="glass rounded-[32px] p-10 card">
+
+          <h3 class="text-2xl font-bold mb-8">
+            Backend
+          </h3>
+
+          <div class="space-y-4 text-gray-300">
+            <p>Spring Boot</p>
+            <p>Hibernate</p>
+            <p>REST APIs</p>
+            <p>Microservices</p>
+          </div>
+
+        </div>
+
+        <div class="glass rounded-[32px] p-10 card">
+
+          <h3 class="text-2xl font-bold mb-8">
+            AWS Cloud
+          </h3>
+
+          <div class="space-y-4 text-gray-300">
+            <p>Lambda</p>
+            <p>SQS / SNS</p>
+            <p>ECS</p>
+            <p>S3 / RDS</p>
+          </div>
+
+        </div>
+
+        <div class="glass rounded-[32px] p-10 card">
+
+          <h3 class="text-2xl font-bold mb-8">
+            Concepts
+          </h3>
+
+          <div class="space-y-4 text-gray-300">
+            <p>Concurrency</p>
+            <p>Multithreading</p>
+            <p>Lock-Free Systems</p>
+            <p>System Design</p>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- CONTACT -->
+
+  <section id="contact" class="py-32 px-6">
+
+    <div class="max-w-5xl mx-auto">
+
+      <div class="glass rounded-[40px] p-16 text-center">
+
+        <p class="uppercase tracking-[6px] text-cyan-300 mb-5">
+          Contact
+        </p>
+
+        <h2 class="text-5xl font-black mb-8">
+
+          Building Systems <br>
+
+          <span class="gradient-text">
+            That Scale
+          </span>
+
+        </h2>
+
+        <p
+          class="text-gray-300 text-lg leading-9 max-w-3xl mx-auto mb-12">
+
+          Open to backend engineering,
+          distributed systems and platform engineering
+          opportunities in product-based companies.
+
+        </p>
+
+        <div class="flex flex-wrap justify-center gap-6">
+
+          <a href="mailto:prajapatiprashant639@gmail.com"
+            class="px-8 py-4 rounded-2xl bg-cyan-300 text-black font-bold hover:scale-105 transition">
+
+            Email
+
+          </a>
+
+          <a href="https://www.linkedin.com/in/prashant-prajapati86/"
+            target="_blank"
+            class="px-8 py-4 rounded-2xl glass border border-white/10 hover:border-cyan-300 transition">
+
+            LinkedIn
+
+          </a>
+
+          <a href="https://github.com/prashantp86/"
+            target="_blank"
+            class="px-8 py-4 rounded-2xl glass border border-white/10 hover:border-cyan-300 transition">
+
+            GitHub
+
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- FOOTER -->
+
+  <footer
+    class="border-t border-white/5 py-10 text-center text-gray-500 text-sm">
+
+    Designed & Engineered by Prashant Prajapati
+
+  </footer>
+
+</body>
+
+</html>
