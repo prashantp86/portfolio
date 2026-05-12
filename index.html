@@ -1,772 +1,997 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Prashant Prajapati — Lead Software Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@300;400;600&family=Syne:wght@400;700;800&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #05050f;
+    --bg2: #080818;
+    --cyan: #00e5ff;
+    --blue: #3d7aff;
+    --violet: #a855f7;
+    --green: #00ff9f;
+    --warn: #ff6b35;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --card: rgba(255,255,255,0.03);
+    --border: rgba(0,229,255,0.12);
+    --glow: 0 0 20px rgba(0,229,255,0.3);
+    --glow-strong: 0 0 40px rgba(0,229,255,0.5), 0 0 80px rgba(0,229,255,0.15);
+  }
 
-  <title>Prashant Prajapati | Backend & Distributed Systems Engineer</title>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  html { scroll-behavior: smooth; }
 
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
-    rel="stylesheet">
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
 
-  <script src="https://cdn.tailwindcss.com"></script>
+  /* ─── CUSTOM CURSOR ─────────────────────────────── */
+  .cursor { position: fixed; width: 8px; height: 8px; background: var(--cyan); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); transition: transform 0.1s; mix-blend-mode: screen; }
+  .cursor-ring { position: fixed; width: 32px; height: 32px; border: 1px solid rgba(0,229,255,0.5); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); transition: all 0.15s ease; }
+  body:hover .cursor-ring { width: 32px; height: 32px; }
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+  /* ─── PARTICLE CANVAS ───────────────────────────── */
+  #canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
 
-    html {
-      scroll-behavior: smooth;
-    }
+  /* ─── SCROLL REVEAL ─────────────────────────────── */
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-left { opacity: 0; transform: translateX(-50px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal-left.visible { opacity: 1; transform: translateX(0); }
+  .reveal-right { opacity: 0; transform: translateX(50px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal-right.visible { opacity: 1; transform: translateX(0); }
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background: #040816;
-      color: white;
-      overflow-x: hidden;
-    }
+  /* ─── NAV ────────────────────────────────────────── */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 100;
+    padding: 18px 40px;
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(5,5,15,0.7);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo { font-family: 'Orbitron', monospace; font-size: 13px; font-weight: 700; color: var(--cyan); letter-spacing: 4px; text-transform: uppercase; }
+  .nav-links { display: flex; gap: 32px; }
+  .nav-links a { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); text-decoration: none; letter-spacing: 2px; text-transform: uppercase; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--cyan); }
 
-    .bg-glow {
-      position: fixed;
-      inset: 0;
-      z-index: -2;
-      background:
-        radial-gradient(circle at top left, rgba(0, 255, 200, 0.18), transparent 25%),
-        radial-gradient(circle at top right, rgba(0, 140, 255, 0.18), transparent 25%),
-        radial-gradient(circle at bottom center, rgba(128, 0, 255, 0.15), transparent 30%),
-        #040816;
-    }
+  /* ─── MAIN WRAPPER ──────────────────────────────── */
+  main { position: relative; z-index: 1; }
 
-    .grid-bg {
-      position: fixed;
-      inset: 0;
-      z-index: -1;
-      background-image:
-        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-      background-size: 60px 60px;
-      mask-image: radial-gradient(circle at center, black 40%, transparent 85%);
-    }
+  /* ─── HERO ──────────────────────────────────────── */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    text-align: center;
+    padding: 120px 20px 80px;
+    position: relative;
+  }
+  .hero-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; letter-spacing: 6px; text-transform: uppercase;
+    color: var(--cyan); margin-bottom: 24px;
+    opacity: 0; animation: fadeUp 0.6s 0.3s forwards;
+  }
+  .hero-eyebrow::before { content: '> '; }
 
-    .gradient-text {
-      background: linear-gradient(90deg, #00ffe0, #4facfe, #8f5cff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
+  .hero-name {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(48px, 8vw, 96px);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -2px;
+    background: linear-gradient(135deg, #fff 0%, var(--cyan) 50%, var(--blue) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    opacity: 0; animation: fadeUp 0.8s 0.5s forwards;
+    position: relative;
+  }
 
-    .glass {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(16px);
-    }
+  /* GLITCH */
+  .glitch { position: relative; }
+  .glitch::before, .glitch::after {
+    content: attr(data-text);
+    position: absolute; top: 0; left: 0; width: 100%;
+    background: linear-gradient(135deg, #fff 0%, var(--cyan) 50%, var(--blue) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .glitch::before { animation: glitch1 4s 2s infinite; clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%); }
+  .glitch::after  { animation: glitch2 4s 2s infinite; clip-path: polygon(0 66%, 100% 66%, 100% 100%, 0 100%); }
 
-    .card {
-      transition: 0.4s ease;
-    }
+  @keyframes glitch1 {
+    0%,95%,100% { transform: translate(0); opacity: 0; }
+    96% { transform: translate(-4px, 2px); opacity: 1; }
+    97% { transform: translate(4px, -2px); opacity: 1; }
+    98% { transform: translate(-2px, 0); opacity: 1; }
+    99% { transform: translate(0); opacity: 0; }
+  }
+  @keyframes glitch2 {
+    0%,95%,100% { transform: translate(0); opacity: 0; }
+    96% { transform: translate(4px, -2px); opacity: 1; }
+    97% { transform: translate(-4px, 2px); opacity: 1; }
+    98% { transform: translate(2px, 0); opacity: 1; }
+    99% { transform: translate(0); opacity: 0; }
+  }
 
-    .card:hover {
-      transform: translateY(-8px) scale(1.02);
-      border-color: rgba(0, 255, 200, 0.4);
-      box-shadow:
-        0 0 40px rgba(0, 255, 200, 0.12),
-        0 0 80px rgba(0, 140, 255, 0.08);
-    }
+  .hero-role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(14px, 2.5vw, 20px);
+    color: var(--muted); margin-top: 16px; min-height: 32px;
+    opacity: 0; animation: fadeUp 0.8s 0.9s forwards;
+  }
+  .hero-role .typed-text { color: var(--text); }
+  .hero-role .cursor-blink { color: var(--cyan); animation: blink 1s infinite; }
+  @keyframes blink { 0%,50% { opacity: 1; } 51%,100% { opacity: 0; } }
 
-    .typing {
-      overflow: hidden;
-      border-right: 3px solid #00ffe0;
-      white-space: nowrap;
-      animation:
-        typing 4s steps(40, end),
-        blink 0.8s infinite;
-    }
+  .hero-tagline {
+    font-size: clamp(14px, 1.8vw, 17px); color: var(--muted);
+    margin-top: 20px; max-width: 550px; line-height: 1.7;
+    opacity: 0; animation: fadeUp 0.8s 1.1s forwards;
+  }
 
-    @keyframes typing {
-      from {
-        width: 0;
-      }
+  /* ─── STAT COUNTERS ─────────────────────────────── */
+  .stats-grid {
+    display: flex; gap: 24px; flex-wrap: wrap; justify-content: center;
+    margin-top: 56px;
+    opacity: 0; animation: fadeUp 0.8s 1.3s forwards;
+  }
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 32px;
+    text-align: center;
+    position: relative; overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: default;
+  }
+  .stat-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(0,229,255,0.05), transparent);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .stat-card:hover { transform: translateY(-4px); box-shadow: var(--glow); }
+  .stat-card:hover::before { opacity: 1; }
+  .stat-num {
+    font-family: 'Orbitron', monospace; font-size: 32px; font-weight: 700;
+    color: var(--cyan); display: block; line-height: 1;
+  }
+  .stat-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-top: 8px; display: block; }
 
-      to {
-        width: 100%;
-      }
-    }
+  .hero-cta {
+    margin-top: 48px; display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;
+    opacity: 0; animation: fadeUp 0.8s 1.5s forwards;
+  }
+  .btn {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 2px;
+    text-transform: uppercase; text-decoration: none;
+    padding: 14px 28px; border-radius: 6px;
+    transition: all 0.3s; cursor: none;
+  }
+  .btn-primary {
+    background: var(--cyan); color: #000; font-weight: 600;
+    box-shadow: 0 0 20px rgba(0,229,255,0.4);
+  }
+  .btn-primary:hover { box-shadow: 0 0 40px rgba(0,229,255,0.7); transform: translateY(-2px); }
+  .btn-secondary {
+    border: 1px solid var(--border); color: var(--text);
+    background: transparent;
+  }
+  .btn-secondary:hover { border-color: var(--cyan); color: var(--cyan); box-shadow: var(--glow); transform: translateY(-2px); }
 
-    @keyframes blink {
-      50% {
-        border-color: transparent;
-      }
-    }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-    .floating {
-      animation: floating 5s ease-in-out infinite;
-    }
+  /* ─── SECTION COMMON ────────────────────────────── */
+  section { padding: 100px 20px; position: relative; z-index: 1; }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 5px;
+    text-transform: uppercase; color: var(--cyan); margin-bottom: 12px;
+  }
+  .section-label::before { content: '// '; opacity: 0.5; }
+  .section-title {
+    font-family: 'Orbitron', monospace; font-size: clamp(28px, 4vw, 44px);
+    font-weight: 700; line-height: 1.1; margin-bottom: 60px;
+    background: linear-gradient(90deg, #fff, var(--muted));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
 
-    @keyframes floating {
-      0% {
-        transform: translateY(0px);
-      }
+  /* ─── ABOUT / TERMINAL ──────────────────────────── */
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
 
-      50% {
-        transform: translateY(-12px);
-      }
+  .terminal-card {
+    background: #0d0d1a; border: 1px solid var(--border); border-radius: 12px;
+    overflow: hidden; font-family: 'JetBrains Mono', monospace; font-size: 13px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+  .terminal-bar {
+    background: #151528; padding: 12px 16px; display: flex; align-items: center; gap: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .dot-red { background: #ff5f57; }
+  .dot-yellow { background: #febc2e; }
+  .dot-green { background: #28c840; }
+  .terminal-title { font-size: 11px; color: var(--muted); margin-left: 8px; letter-spacing: 1px; }
+  .terminal-body { padding: 20px 24px; line-height: 2; }
+  .t-key { color: var(--cyan); }
+  .t-val { color: var(--green); }
+  .t-str { color: #e2c08d; }
+  .t-num { color: #f78c6c; }
+  .t-comment { color: #4a5568; font-style: italic; }
+  .t-list { color: var(--text); }
 
-      100% {
-        transform: translateY(0px);
-      }
-    }
+  .about-highlights { display: flex; flex-direction: column; gap: 20px; }
+  .highlight-item {
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    padding: 20px 24px; position: relative; overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .highlight-item:hover { transform: translateX(4px); box-shadow: -4px 0 0 var(--cyan), var(--glow); }
+  .highlight-item::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+    background: linear-gradient(to bottom, var(--cyan), var(--blue));
+  }
+  .highlight-icon { font-size: 22px; margin-bottom: 8px; }
+  .highlight-title { font-family: 'Orbitron', monospace; font-size: 13px; font-weight: 700; color: var(--cyan); letter-spacing: 1px; }
+  .highlight-desc { font-size: 13px; color: var(--muted); margin-top: 6px; line-height: 1.6; }
 
-    .pulse {
-      animation: pulse 2s infinite;
-    }
+  /* ─── EXPERIENCE TIMELINE ───────────────────────── */
+  .timeline { position: relative; padding-left: 40px; }
+  .timeline::before {
+    content: ''; position: absolute; left: 10px; top: 0; bottom: 0; width: 1px;
+    background: linear-gradient(to bottom, var(--cyan), transparent);
+  }
+  .timeline-item { position: relative; margin-bottom: 56px; }
+  .timeline-dot {
+    position: absolute; left: -36px; top: 6px;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--bg); border: 2px solid var(--cyan);
+    box-shadow: 0 0 12px var(--cyan);
+    transition: transform 0.3s;
+  }
+  .timeline-item:hover .timeline-dot { transform: scale(1.4); background: var(--cyan); }
+  .timeline-period {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 2px;
+    color: var(--muted); text-transform: uppercase; margin-bottom: 8px;
+  }
+  .timeline-role {
+    font-family: 'Orbitron', monospace; font-size: 18px; font-weight: 700;
+    color: var(--text); margin-bottom: 4px;
+  }
+  .timeline-company { font-size: 14px; color: var(--cyan); margin-bottom: 16px; font-weight: 600; }
+  .timeline-bullets { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .timeline-bullets li {
+    font-size: 14px; color: var(--muted); line-height: 1.6;
+    padding-left: 20px; position: relative;
+  }
+  .timeline-bullets li::before { content: '▸'; position: absolute; left: 0; color: var(--cyan); }
+  .timeline-bullets li strong { color: var(--text); font-weight: 600; }
+  .timeline-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1px;
+    padding: 4px 10px; border-radius: 4px;
+    background: rgba(0,229,255,0.08); border: 1px solid rgba(0,229,255,0.2);
+    color: var(--cyan); text-transform: uppercase;
+  }
 
-    @keyframes pulse {
-      0% {
-        box-shadow: 0 0 0 rgba(0, 255, 200, 0.4);
-      }
+  /* ─── TECH STACK ────────────────────────────────── */
+  .tech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+  .tech-category {
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+    padding: 28px; transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .tech-category:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(0,0,0,0.4), var(--glow); }
+  .tech-cat-title {
+    font-family: 'Orbitron', monospace; font-size: 12px; font-weight: 700;
+    color: var(--cyan); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 20px;
+  }
+  .tech-items { display: flex; flex-wrap: wrap; gap: 10px; }
+  .tech-pill {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    padding: 6px 14px; border-radius: 20px;
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+    color: var(--text); transition: all 0.2s; cursor: default;
+  }
+  .tech-pill:hover { background: rgba(0,229,255,0.1); border-color: var(--cyan); color: var(--cyan); transform: scale(1.05); }
 
-      50% {
-        box-shadow: 0 0 40px rgba(0, 255, 200, 0.4);
-      }
+  /* skill bars */
+  .skill-bars { display: flex; flex-direction: column; gap: 16px; margin-top: 8px; }
+  .skill-row { display: flex; flex-direction: column; gap: 6px; }
+  .skill-header { display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text); }
+  .skill-header span:last-child { color: var(--cyan); }
+  .skill-bar-bg { background: rgba(255,255,255,0.05); border-radius: 20px; height: 6px; overflow: hidden; }
+  .skill-bar-fill { height: 100%; border-radius: 20px; width: 0; transition: width 1.2s cubic-bezier(0.4,0,0.2,1); }
+  .fill-cyan  { background: linear-gradient(to right, var(--blue), var(--cyan)); box-shadow: 0 0 8px var(--cyan); }
+  .fill-violet{ background: linear-gradient(to right, #6d28d9, var(--violet)); box-shadow: 0 0 8px var(--violet); }
+  .fill-green { background: linear-gradient(to right, #059669, var(--green)); box-shadow: 0 0 8px var(--green); }
 
-      100% {
-        box-shadow: 0 0 0 rgba(0, 255, 200, 0.4);
-      }
-    }
+  /* ─── PROJECTS ──────────────────────────────────── */
+  .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(460px, 1fr)); gap: 28px; }
+  .project-card {
+    background: var(--card);
+    border: 1px solid var(--border); border-radius: 16px;
+    padding: 32px; position: relative; overflow: hidden;
+    transition: transform 0.4s cubic-bezier(0.4,0,0.2,1), box-shadow 0.4s;
+  }
+  .project-card::before {
+    content: ''; position: absolute; inset: 0; opacity: 0;
+    background: radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(0,229,255,0.06), transparent 60%);
+    transition: opacity 0.3s;
+  }
+  .project-card:hover::before { opacity: 1; }
+  .project-card:hover { transform: translateY(-8px); box-shadow: 0 30px 80px rgba(0,0,0,0.4), var(--glow); }
+  .project-badge {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 2px;
+    text-transform: uppercase; padding: 4px 12px; border-radius: 20px;
+    border: 1px solid currentColor; display: inline-block; margin-bottom: 16px;
+  }
+  .badge-cyan { color: var(--cyan); background: rgba(0,229,255,0.08); }
+  .badge-violet { color: var(--violet); background: rgba(168,85,247,0.08); }
+  .badge-green { color: var(--green); background: rgba(0,255,159,0.08); }
+  .badge-warn  { color: var(--warn);  background: rgba(255,107,53,0.08); }
+  .project-title { font-family: 'Orbitron', monospace; font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 12px; line-height: 1.3; }
+  .project-desc { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 20px; }
+  .project-impact { display: flex; gap: 20px; flex-wrap: wrap; }
+  .impact-item { text-align: center; }
+  .impact-num { font-family: 'Orbitron', monospace; font-size: 20px; font-weight: 700; color: var(--cyan); }
+  .impact-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
 
-    .timeline-line {
-      position: absolute;
-      left: 16px;
-      top: 0;
-      bottom: 0;
-      width: 2px;
-      background: linear-gradient(to bottom, #00ffe0, #4facfe, #8f5cff);
-    }
-  </style>
+  /* ─── ARCHITECTURE CONCEPTS ─────────────────────── */
+  .concepts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .concept-cell {
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    padding: 20px; text-align: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--text);
+    transition: all 0.3s; cursor: default; position: relative; overflow: hidden;
+  }
+  .concept-cell::after {
+    content: ''; position: absolute; inset: -100%;
+    background: linear-gradient(45deg, transparent 30%, rgba(0,229,255,0.05), transparent 70%);
+    transition: inset 0.5s;
+  }
+  .concept-cell:hover { border-color: var(--cyan); color: var(--cyan); box-shadow: var(--glow); transform: scale(1.03); }
+  .concept-cell:hover::after { inset: 100%; }
+  .concept-icon { font-size: 24px; margin-bottom: 10px; }
+
+  /* ─── AWARDS ────────────────────────────────────── */
+  .awards-grid { display: flex; gap: 20px; flex-wrap: wrap; }
+  .award-card {
+    flex: 1; min-width: 200px;
+    background: var(--card); border: 1px solid rgba(255,215,0,0.2); border-radius: 12px;
+    padding: 24px; text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .award-card:hover { transform: translateY(-4px); box-shadow: 0 0 30px rgba(255,215,0,0.1); border-color: gold; }
+  .award-icon { font-size: 32px; margin-bottom: 12px; }
+  .award-name { font-family: 'Orbitron', monospace; font-size: 13px; font-weight: 700; color: #ffd700; margin-bottom: 6px; }
+  .award-org { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 1px; }
+
+  /* ─── CONTACT ────────────────────────────────────── */
+  .contact-section { text-align: center; padding: 100px 20px; }
+  .contact-grid { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 48px; }
+  .contact-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+    padding: 28px 36px; text-decoration: none;
+    transition: transform 0.3s, box-shadow 0.3s; display: flex; align-items: center; gap: 16px;
+  }
+  .contact-card:hover { transform: translateY(-4px); box-shadow: var(--glow); border-color: var(--cyan); }
+  .contact-icon { font-size: 28px; }
+  .contact-info { text-align: left; }
+  .contact-type { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; }
+  .contact-val { font-size: 14px; color: var(--text); margin-top: 4px; }
+
+  /* ─── FOOTER ────────────────────────────────────── */
+  footer {
+    text-align: center; padding: 32px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted);
+    border-top: 1px solid var(--border);
+    letter-spacing: 2px;
+  }
+  footer span { color: var(--cyan); }
+
+  /* ─── SCROLLBAR ─────────────────────────────────── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--cyan); border-radius: 2px; }
+
+  /* ─── FLOATING ORB BG ───────────────────────────── */
+  .orb {
+    position: fixed; border-radius: 50%; filter: blur(80px); pointer-events: none;
+    animation: float 8s ease-in-out infinite;
+    z-index: 0;
+  }
+  .orb1 { width: 600px; height: 600px; top: -200px; right: -200px; background: rgba(61,122,255,0.06); animation-delay: 0s; }
+  .orb2 { width: 500px; height: 500px; bottom: 10%; left: -150px; background: rgba(0,229,255,0.04); animation-delay: 3s; }
+  .orb3 { width: 400px; height: 400px; top: 50%; right: 10%; background: rgba(168,85,247,0.04); animation-delay: 6s; }
+  @keyframes float {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-30px) scale(1.05); }
+  }
+
+  /* ─── SEPARATOR ─────────────────────────────────── */
+  .sep { width: 100%; height: 1px; background: linear-gradient(to right, transparent, var(--border), transparent); margin: 0; }
+
+  @media (max-width: 768px) {
+    .about-grid { grid-template-columns: 1fr; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .concepts-grid { grid-template-columns: repeat(2, 1fr); }
+    nav { padding: 16px 20px; }
+    .nav-links { display: none; }
+  }
+</style>
 </head>
-
 <body>
 
-  <div class="bg-glow"></div>
-  <div class="grid-bg"></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
 
-  <!-- NAVBAR -->
+<canvas id="canvas"></canvas>
 
-  <nav
-    class="fixed top-0 left-0 w-full z-50 border-b border-white/5 backdrop-blur-xl bg-black/20">
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
 
-    <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+<!-- ── NAV ─────────────────────────────────── -->
+<nav>
+  <div class="nav-logo">Prashant // Lead Engineer</div>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#experience">Experience</a>
+    <a href="#projects">Projects</a>
+    <a href="#stack">Stack</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
 
-      <h1 class="text-2xl font-black gradient-text">
-        PRASHANT
-      </h1>
+<main>
 
-      <div class="hidden md:flex gap-8 text-sm text-gray-300">
+<!-- ── HERO ────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-eyebrow">Lead Software Engineer · Delhi NCR, India</div>
+  <h1 class="hero-name glitch" data-text="Prashant Prajapati">Prashant Prajapati</h1>
+  <div class="hero-role">
+    <span class="typed-text" id="typed"></span><span class="cursor-blink">█</span>
+  </div>
+  <p class="hero-tagline">Building distributed systems that scale to millions. Architect of high-throughput pipelines that cut costs and redefined reliability at Samsung R&D Institute India · Delhi.</p>
 
-        <a href="#about" class="hover:text-cyan-300 transition">About</a>
-        <a href="#impact" class="hover:text-cyan-300 transition">Impact</a>
-        <a href="#experience" class="hover:text-cyan-300 transition">Experience</a>
-        <a href="#skills" class="hover:text-cyan-300 transition">Skills</a>
-        <a href="#contact" class="hover:text-cyan-300 transition">Contact</a>
+  <div class="stats-grid">
+    <div class="stat-card">
+      <span class="stat-num" data-target="1000000" data-prefix="$" data-suffix="+ saved">$0</span>
+      <span class="stat-label">Annual Cost Savings</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num" data-target="18" data-suffix="x">0x</span>
+      <span class="stat-label">Faster Indexing</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num" data-target="4" data-suffix="+yrs">0</span>
+      <span class="stat-label">Years Experience</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num" data-target="10000" data-prefix="$" data-suffix="/mo">$0</span>
+      <span class="stat-label">Monthly Infra Saved</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num" data-target="14" data-suffix="x">0x</span>
+      <span class="stat-label">Scale Increase</span>
+    </div>
+  </div>
 
+  <div class="hero-cta">
+    <a href="mailto:prajapatiprashant639@gmail.com" class="btn btn-primary">Get In Touch</a>
+    <a href="https://www.linkedin.com/in/prashant-prajapati86/" class="btn btn-secondary">LinkedIn ↗</a>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ── ABOUT ────────────────────────────────── -->
+<section id="about">
+  <div class="container">
+    <div class="section-label reveal">Profile</div>
+    <div class="section-title reveal">Who I Am</div>
+    <div class="about-grid">
+      <div class="terminal-card reveal-left">
+        <div class="terminal-bar">
+          <div class="dot dot-red"></div>
+          <div class="dot dot-yellow"></div>
+          <div class="dot dot-green"></div>
+          <span class="terminal-title">prashant.yaml</span>
+        </div>
+        <div class="terminal-body">
+          <div><span class="t-key">name</span>: <span class="t-str">"Prashant Prajapati"</span></div>
+          <div><span class="t-key">role</span>: <span class="t-str">"Lead Software Engineer"</span></div>
+          <div><span class="t-key">company</span>: <span class="t-str">"Samsung R&amp;D Institute India · Delhi"</span></div>
+          <div><span class="t-key">location</span>: <span class="t-str">"Delhi NCR, India"</span></div>
+          <div><span class="t-key">education</span>: <span class="t-str">"B.Tech CSE, IIIT Vadodara"</span></div>
+          <br>
+          <div><span class="t-key">expertise</span>:</div>
+          <div>&nbsp;&nbsp;- <span class="t-list">"Distributed Systems"</span></div>
+          <div>&nbsp;&nbsp;- <span class="t-list">"High-Throughput Pipelines"</span></div>
+          <div>&nbsp;&nbsp;- <span class="t-list">"Cloud Architecture (AWS)"</span></div>
+          <div>&nbsp;&nbsp;- <span class="t-list">"System Design &amp; Concurrency"</span></div>
+          <br>
+          <div><span class="t-key">open_to</span>: <span class="t-str">"SDE-2 / Lead Engineer Roles"</span></div>
+          <div><span class="t-comment"># NCR Region: Noida / Gurugram / Delhi</span></div>
+        </div>
+      </div>
+
+      <div class="about-highlights reveal-right">
+        <div class="highlight-item">
+          <div class="highlight-icon">🏗️</div>
+          <div class="highlight-title">Architect-Level Thinking</div>
+          <div class="highlight-desc">Redesigned distributed indexing pipelines from ground up — replacing lock contention with lock-free architectures, cutting server count by 33%.</div>
+        </div>
+        <div class="highlight-item">
+          <div class="highlight-icon">⚡</div>
+          <div class="highlight-title">Performance Obsessed</div>
+          <div class="highlight-desc">Achieved 18x reduction in content indexing time (90 min → 5 min) and scaled capacity from 500 → 7,000 hours of indexed content.</div>
+        </div>
+        <div class="highlight-item">
+          <div class="highlight-icon">☁️</div>
+          <div class="highlight-title">Cloud-Native Migrations</div>
+          <div class="highlight-desc">Led serverless migration (Lambda + ALB + SQS) that decommissioned 18 EC2 instances, saving $10K/month with zero downtime.</div>
+        </div>
+        <div class="highlight-item">
+          <div class="highlight-icon">🤖</div>
+          <div class="highlight-title">AI Pipeline Engineering</div>
+          <div class="highlight-desc">Built end-to-end AI data pipelines integrating GPU inference, S3 storage, and multi-API orchestration — eliminating 100% manual effort.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ── EXPERIENCE ────────────────────────────── -->
+<section id="experience">
+  <div class="container">
+    <div class="section-label reveal">Career</div>
+    <div class="section-title reveal">Experience</div>
+    <div class="timeline">
+
+      <div class="timeline-item reveal">
+        <div class="timeline-dot"></div>
+        <div class="timeline-period">Mar 2026 – Present</div>
+        <div class="timeline-role">Lead Software Engineer</div>
+        <div class="timeline-company">Samsung R&D Institute India · Delhi</div>
+        <ul class="timeline-bullets">
+          <li>Leading re-architecture of distributed VOD &amp; CC indexing pipelines with <strong>Kafka, ZooKeeper, S3 snapshot</strong> strategies</li>
+          <li>Designing <strong>slave synchronization</strong> with partition offset embedding for zero-drift bootstrap</li>
+          <li>Driving <strong>Spring Boot + JNI C++</strong> integration with Thrift RPC and TBB concurrency fixes</li>
+          <li>Mentoring engineers and establishing distributed systems design patterns for the team</li>
+        </ul>
+        <div class="timeline-tags">
+          <span class="tag">Kafka</span><span class="tag">ZooKeeper</span><span class="tag">Spring Boot</span>
+          <span class="tag">JNI / C++</span><span class="tag">S3</span><span class="tag">Thrift RPC</span>
+        </div>
+      </div>
+
+      <div class="timeline-item reveal">
+        <div class="timeline-dot"></div>
+        <div class="timeline-period">Jul 2022 – Feb 2026</div>
+        <div class="timeline-role">Software Engineer</div>
+        <div class="timeline-company">Samsung R&D Institute India · Delhi</div>
+        <ul class="timeline-bullets">
+          <li>Eliminated read/write locks → <strong>lock-free concurrent architecture</strong>, saving <strong>$1M+ annually</strong></li>
+          <li>Scaled indexed content from <strong>500 → 7,000 hours (14x)</strong>; reduced indexing time <strong>90 min → 5 min (18x)</strong></li>
+          <li>Migrated EPG REST server to <strong>AWS Lambda + ALB + SQS</strong>, saving <strong>$10K/month</strong>, decommissioning 18 EC2s</li>
+          <li>Built AI Context Generation Pipeline with GPU inference, 4 third-party API integrations, and Spring Boot REST layer</li>
+          <li>Modernized 4 modules from <strong>Java 8 → Java 17</strong> with zero-downtime rollout</li>
+          <li>Discovered &amp; patched critical <strong>S3 race condition</strong> in production pipeline</li>
+        </ul>
+        <div class="timeline-tags">
+          <span class="tag">Java</span><span class="tag">AWS Lambda</span><span class="tag">Redis</span>
+          <span class="tag">MySQL</span><span class="tag">Docker</span><span class="tag">Prometheus</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ── PROJECTS ─────────────────────────────── -->
+<section id="projects">
+  <div class="container">
+    <div class="section-label reveal">Work</div>
+    <div class="section-title reveal">What I've Built</div>
+    <div class="projects-grid">
+
+      <div class="project-card reveal">
+        <span class="project-badge badge-cyan">Distributed Systems</span>
+        <div class="project-title">Lock-Free Content Indexing Platform</div>
+        <div class="project-desc">Redesigned the core distributed indexing engine, replacing blocking lock patterns with a concurrent, lock-free architecture. Scaled content capacity 14x and slashed indexing latency by 18x.</div>
+        <div class="project-impact">
+          <div class="impact-item"><div class="impact-num">$1M+</div><div class="impact-label">Annual Savings</div></div>
+          <div class="impact-item"><div class="impact-num">18x</div><div class="impact-label">Faster</div></div>
+          <div class="impact-item"><div class="impact-num">33%</div><div class="impact-label">Fewer Servers</div></div>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <span class="project-badge badge-violet">Cloud / Serverless</span>
+        <div class="project-title">Serverless EPG Infrastructure Migration</div>
+        <div class="project-desc">Architected and executed migration of EPG REST server from EC2-based deployment to fully serverless stack (AWS Lambda + ALB + SQS). Decommissioned 18 EC2 instances with zero downtime.</div>
+        <div class="project-impact">
+          <div class="impact-item"><div class="impact-num">$10K</div><div class="impact-label">Saved/Month</div></div>
+          <div class="impact-item"><div class="impact-num">18</div><div class="impact-label">EC2s Removed</div></div>
+          <div class="impact-item"><div class="impact-num">0</div><div class="impact-label">Downtime</div></div>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <span class="project-badge badge-green">AI / ML</span>
+        <div class="project-title">AI Context Generation Pipeline</div>
+        <div class="project-desc">End-to-end pipeline: video ingestion → frame extraction → GPU inference → S3 storage. Integrated 4 third-party APIs, built Spring Boot REST layer, eliminating 100% of manual data preparation effort.</div>
+        <div class="project-impact">
+          <div class="impact-item"><div class="impact-num">4</div><div class="impact-label">APIs Integrated</div></div>
+          <div class="impact-item"><div class="impact-num">100%</div><div class="impact-label">Manual Effort Removed</div></div>
+          <div class="impact-item"><div class="impact-num">GPU</div><div class="impact-label">Inference at Scale</div></div>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <span class="project-badge badge-warn">Platform</span>
+        <div class="project-title">Distributed Kafka-Based Sync Architecture</div>
+        <div class="project-desc">Re-architecting VOD/CC indexing with Kafka (frames-insert/delete topics), ZooKeeper 3-state ephemeral node model for swap coordination, S3 snapshots with embedded partition offsets for zero-drift slave bootstrap.</div>
+        <div class="project-impact">
+          <div class="impact-item"><div class="impact-num">N</div><div class="impact-label">Partitions Keyed</div></div>
+          <div class="impact-item"><div class="impact-num">3-State</div><div class="impact-label">ZK Coordination</div></div>
+          <div class="impact-item"><div class="impact-num">0</div><div class="impact-label">Slave Drift</div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ── TECH STACK ────────────────────────────── -->
+<section id="stack">
+  <div class="container">
+    <div class="section-label reveal">Arsenal</div>
+    <div class="section-title reveal">Tech Stack</div>
+    <div class="tech-grid">
+
+      <div class="tech-category reveal">
+        <div class="tech-cat-title">Core Languages</div>
+        <div class="tech-items">
+          <span class="tech-pill">Java 17</span><span class="tech-pill">C++</span>
+          <span class="tech-pill">Python</span><span class="tech-pill">Bash</span><span class="tech-pill">SQL</span>
+        </div>
+      </div>
+
+      <div class="tech-category reveal">
+        <div class="tech-cat-title">Backend</div>
+        <div class="tech-items">
+          <span class="tech-pill">Spring Boot</span><span class="tech-pill">Hibernate</span>
+          <span class="tech-pill">JPA</span><span class="tech-pill">Thrift RPC</span><span class="tech-pill">Flask</span>
+        </div>
+      </div>
+
+      <div class="tech-category reveal">
+        <div class="tech-cat-title">Distributed</div>
+        <div class="tech-items">
+          <span class="tech-pill">Kafka</span><span class="tech-pill">ZooKeeper</span>
+          <span class="tech-pill">Redis</span><span class="tech-pill">JNI (C++)</span><span class="tech-pill">TBB</span>
+        </div>
+      </div>
+
+      <div class="tech-category reveal">
+        <div class="tech-cat-title">AWS Cloud</div>
+        <div class="tech-items">
+          <span class="tech-pill">Lambda</span><span class="tech-pill">S3</span>
+          <span class="tech-pill">SQS</span><span class="tech-pill">SNS</span>
+          <span class="tech-pill">ECS</span><span class="tech-pill">RDS</span><span class="tech-pill">CloudWatch</span>
+        </div>
+      </div>
+
+      <div class="tech-category reveal">
+        <div class="tech-cat-title">DevOps</div>
+        <div class="tech-items">
+          <span class="tech-pill">Docker</span><span class="tech-pill">Linux</span>
+          <span class="tech-pill">CI/CD</span><span class="tech-pill">Prometheus</span>
+          <span class="tech-pill">Grafana</span><span class="tech-pill">Nagios</span>
+        </div>
+      </div>
+
+      <div class="tech-category reveal">
+        <div class="tech-cat-title">Databases</div>
+        <div class="tech-items">
+          <span class="tech-pill">MySQL</span><span class="tech-pill">PostgreSQL</span>
+          <span class="tech-pill">Redis</span>
+        </div>
       </div>
 
     </div>
 
-  </nav>
-
-  <!-- HERO -->
-
-  <section class="min-h-screen flex items-center px-6 pt-24">
-
-    <div
-      class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
-
-      <div>
-
-        <p
-          class="uppercase tracking-[6px] text-cyan-300 text-sm mb-6">
-
-          Lead Software Engineer • Samsung R&D Institute Delhi
-
-        </p>
-
-        <h1
-          class="text-5xl md:text-7xl font-black leading-tight mb-8">
-
-          Backend Engineer <br>
-
-          Building
-          <span class="gradient-text">
-            Distributed Systems
-          </span>
-
-          At Scale
-
-        </h1>
-
-        <div
-          class="typing text-xl text-gray-300 mb-10 max-w-2xl">
-
-          Java • Spring Boot • AWS • Microservices • Concurrency
-
+    <!-- Skill Bars -->
+    <div style="margin-top: 56px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+      <div class="reveal">
+        <div class="section-label" style="margin-bottom: 24px;">Proficiency</div>
+        <div class="skill-bars" id="skillBars">
+          <div class="skill-row">
+            <div class="skill-header"><span>Java / Spring Boot</span><span>95%</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar-fill fill-cyan" data-w="95"></div></div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-header"><span>Distributed Systems</span><span>90%</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar-fill fill-cyan" data-w="90"></div></div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-header"><span>AWS / Cloud</span><span>85%</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar-fill fill-violet" data-w="85"></div></div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-header"><span>C++ / JNI</span><span>75%</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar-fill fill-violet" data-w="75"></div></div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-header"><span>System Design</span><span>88%</span></div>
+            <div class="skill-bar-bg"><div class="skill-bar-fill fill-green" data-w="88"></div></div>
+          </div>
         </div>
-
-        <p
-          class="text-gray-400 text-lg leading-9 max-w-2xl mb-12">
-
-          Specialized in high throughput backend systems,
-          distributed indexing platforms, serverless
-          architectures and performance engineering.
-          Delivered $1M+ infrastructure savings and
-          18x performance improvements at Samsung R&D Institute Delhi.
-        </p>
-
-        <div class="flex flex-wrap gap-5">
-
-          <a href="#contact"
-            class="px-8 py-4 rounded-2xl bg-cyan-300 text-black font-bold hover:scale-105 transition pulse">
-
-            Contact Me
-
-          </a>
-
-          <a href="https://github.com/"
-            target="_blank"
-            class="px-8 py-4 rounded-2xl glass border border-white/10 hover:border-cyan-300 transition">
-
-            GitHub
-
-          </a>
-
-          <a href="https://linkedin.com/"
-            target="_blank"
-            class="px-8 py-4 rounded-2xl glass border border-white/10 hover:border-cyan-300 transition">
-
-            LinkedIn
-
-          </a>
-
-        </div>
-
-        <!-- METRICS -->
-
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16">
-
-          <div>
-            <h2 class="text-4xl font-black gradient-text">
-              $1M+
-            </h2>
-            <p class="text-gray-400 mt-2 text-sm">
-              Annual Savings
-            </p>
-          </div>
-
-          <div>
-            <h2 class="text-4xl font-black gradient-text">
-              18x
-            </h2>
-            <p class="text-gray-400 mt-2 text-sm">
-              Faster Indexing
-            </p>
-          </div>
-
-          <div>
-            <h2 class="text-4xl font-black gradient-text">
-              7000h+
-            </h2>
-            <p class="text-gray-400 mt-2 text-sm">
-              Indexed Content
-            </p>
-          </div>
-
-          <div>
-            <h2 class="text-4xl font-black gradient-text">
-              4+
-            </h2>
-            <p class="text-gray-400 mt-2 text-sm">
-              Years Experience
-            </p>
-          </div>
-
-        </div>
-
       </div>
 
-      <!-- RIGHT -->
-
-      <div class="relative flex justify-center">
-
-        <div
-          class="glass rounded-[40px] p-10 max-w-xl w-full floating">
-
-<pre class="text-sm text-cyan-200 leading-8 overflow-x-auto">
-BackendEngineer engineer = new BackendEngineer();
-
-engineer.skills(
-    "Java",
-    "Spring Boot",
-    "AWS",
-    "Distributed Systems",
-    "Concurrency",
-    "Microservices"
-);
-
-engineer.achievements(
-    "$1M+ cost savings",
-    "18x performance boost",
-    "Serverless migration",
-    "Lock-free architecture"
-);
-
-engineer.build();
-</pre>
-
+      <!-- Concepts -->
+      <div class="reveal">
+        <div class="section-label" style="margin-bottom: 24px;">Architecture Concepts</div>
+        <div class="concepts-grid">
+          <div class="concept-cell"><div class="concept-icon">🔀</div>Microservices</div>
+          <div class="concept-cell"><div class="concept-icon">⚡</div>Event-Driven</div>
+          <div class="concept-cell"><div class="concept-icon">🔓</div>Lock-Free Design</div>
+          <div class="concept-cell"><div class="concept-icon">🌐</div>Distributed</div>
+          <div class="concept-cell"><div class="concept-icon">☁️</div>Serverless</div>
+          <div class="concept-cell"><div class="concept-icon">🎯</div>High Throughput</div>
+          <div class="concept-cell"><div class="concept-icon">🏛️</div>System Design</div>
+          <div class="concept-cell"><div class="concept-icon">🔄</div>Concurrency</div>
+          <div class="concept-cell"><div class="concept-icon">💰</div>Cost Optim.</div>
         </div>
-
       </div>
-
     </div>
+  </div>
+</section>
 
-  </section>
+<div class="sep"></div>
 
-  <!-- ABOUT -->
-
-  <section id="about" class="py-32 px-6">
-
-    <div class="max-w-7xl mx-auto">
-
-      <div class="mb-16">
-
-        <p class="uppercase tracking-[6px] text-cyan-300 mb-4">
-          About
-        </p>
-
-        <h2 class="text-5xl font-black">
-          Engineering
-          <span class="gradient-text">
-            Reliable Backend Systems
-          </span>
-        </h2>
-
+<!-- ── AWARDS ────────────────────────────────── -->
+<section>
+  <div class="container">
+    <div class="section-label reveal">Recognition</div>
+    <div class="section-title reveal">Awards</div>
+    <div class="awards-grid">
+      <div class="award-card reveal">
+        <div class="award-icon">🏆</div>
+        <div class="award-name">Service S/W Lab Award</div>
+        <div class="award-org">Samsung R&D Institute India · Delhi</div>
       </div>
-
-      <div class="grid lg:grid-cols-3 gap-8">
-
-        <div class="glass rounded-[32px] p-10 card">
-
-          <h3 class="text-2xl font-bold mb-6">
-            Backend Engineering
-          </h3>
-
-          <p class="text-gray-300 leading-8">
-            Designing scalable REST APIs, microservices,
-            indexing systems and high throughput backend
-            services using Java and Spring Boot.
-          </p>
-
-        </div>
-
-        <div class="glass rounded-[32px] p-10 card">
-
-          <h3 class="text-2xl font-bold mb-6">
-            Distributed Systems
-          </h3>
-
-          <p class="text-gray-300 leading-8">
-            Building lock-free systems, multithreaded
-            processing pipelines and horizontally scalable
-            architectures for large scale content processing.
-          </p>
-
-        </div>
-
-        <div class="glass rounded-[32px] p-10 card">
-
-          <h3 class="text-2xl font-bold mb-6">
-            Cloud & DevOps
-          </h3>
-
-          <p class="text-gray-300 leading-8">
-            AWS serverless architecture, ECS deployment,
-            observability, CI/CD automation and cloud
-            infrastructure optimization.
-          </p>
-
-        </div>
-
+      <div class="award-card reveal">
+        <div class="award-icon">⭐</div>
+        <div class="award-name">SPOT Award × 3</div>
+        <div class="award-org">Samsung R&D Institute India · Delhi</div>
       </div>
-
+      <div class="award-card reveal">
+        <div class="award-icon">🎓</div>
+        <div class="award-name">B.Tech CSE</div>
+        <div class="award-org">IIIT Vadodara · 2022</div>
+      </div>
+      <div class="award-card reveal">
+        <div class="award-icon">💡</div>
+        <div class="award-name">$1M+ Cost Impact</div>
+        <div class="award-org">Lock-Free Architecture</div>
+      </div>
     </div>
+  </div>
+</section>
 
-  </section>
+<div class="sep"></div>
 
-  <!-- IMPACT -->
-
-  <section id="impact" class="py-32 px-6">
-
-    <div class="max-w-7xl mx-auto">
-
-      <div class="mb-20">
-
-        <p class="uppercase tracking-[6px] text-cyan-300 mb-4">
-          Engineering Impact
-        </p>
-
-        <h2 class="text-5xl font-black">
-
-          Real
-          <span class="gradient-text">
-            Production Scale Results
-          </span>
-
-        </h2>
-
+<!-- ── CONTACT ───────────────────────────────── -->
+<section id="contact" class="contact-section">
+  <div class="section-label reveal">Let's Connect</div>
+  <div class="section-title reveal" style="margin-bottom: 16px;">Open to SDE-2 & Lead Roles</div>
+  <p class="reveal" style="color: var(--muted); font-size: 15px; max-width: 500px; margin: 0 auto; line-height: 1.7;">
+    Actively looking for high-impact engineering roles in the <span style="color:var(--cyan)">Delhi NCR region</span> (Noida · Gurugram · Delhi), Pune, Bengaluru, Hyderabad. Let's build something exceptional.
+  </p>
+  <div class="contact-grid">
+    <a href="mailto:prajapatiprashant639@gmail.com" class="contact-card reveal">
+      <div class="contact-icon">📧</div>
+      <div class="contact-info">
+        <div class="contact-type">Email</div>
+        <div class="contact-val">prajapatiprashant639@gmail.com</div>
       </div>
-
-      <div class="grid md:grid-cols-2 xl:grid-cols-4 gap-8">
-
-        <div class="glass rounded-[32px] p-10 card">
-          <h2 class="text-5xl font-black gradient-text mb-5">
-            $1M+
-          </h2>
-
-          <p class="text-gray-300 leading-7">
-            Infrastructure savings achieved through
-            lock-free architecture redesign.
-          </p>
-        </div>
-
-        <div class="glass rounded-[32px] p-10 card">
-          <h2 class="text-5xl font-black gradient-text mb-5">
-            18x
-          </h2>
-
-          <p class="text-gray-300 leading-7">
-            Reduced indexing time from
-            90 minutes to 5 minutes.
-          </p>
-        </div>
-
-        <div class="glass rounded-[32px] p-10 card">
-          <h2 class="text-5xl font-black gradient-text mb-5">
-            14x
-          </h2>
-
-          <p class="text-gray-300 leading-7">
-            Increased content indexing
-            throughput using sharding architecture.
-          </p>
-        </div>
-
-        <div class="glass rounded-[32px] p-10 card">
-          <h2 class="text-5xl font-black gradient-text mb-5">
-            18
-          </h2>
-
-          <p class="text-gray-300 leading-7">
-            EC2 instances removed via
-            AWS serverless migration.
-          </p>
-        </div>
-
+    </a>
+    <a href="https://www.linkedin.com/in/prashant-prajapati86/" class="contact-card reveal">
+      <div class="contact-icon">💼</div>
+      <div class="contact-info">
+        <div class="contact-type">LinkedIn</div>
+        <div class="contact-val">linkedin.com/in/prashant-prajapati86</div>
       </div>
-
-    </div>
-
-  </section>
-
-  <!-- EXPERIENCE -->
-
-  <section id="experience" class="py-32 px-6">
-
-    <div class="max-w-6xl mx-auto">
-
-      <div class="mb-20">
-
-        <p class="uppercase tracking-[6px] text-cyan-300 mb-4">
-          Experience
-        </p>
-
-        <h2 class="text-5xl font-black">
-          Career
-          <span class="gradient-text">
-            Timeline
-          </span>
-        </h2>
-
+    </a>
+    <a href="https://github.com/prashantp86/" class="contact-card reveal">
+      <div class="contact-icon">🐙</div>
+      <div class="contact-info">
+        <div class="contact-type">GitHub</div>
+        <div class="contact-val">github.com/prashantp86</div>
       </div>
-
-      <div class="relative pl-16">
-
-        <div class="timeline-line"></div>
-
-        <!-- ITEM -->
-
-        <div class="relative mb-16">
-
-          <div
-            class="absolute left-[-56px] top-2 w-8 h-8 rounded-full bg-cyan-300">
-          </div>
-
-          <div class="glass rounded-[32px] p-10 card">
-
-            <div
-              class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-
-              <div>
-
-                <h3 class="text-3xl font-bold">
-                  Lead Software Engineer
-                </h3>
-
-                <p class="text-cyan-300 mt-2">
-                  Samsung R&D Institute Delhi
-                </p>
-
-              </div>
-
-              <span
-                class="text-gray-400 text-sm">
-
-                March 2026 - Present
-
-              </span>
-
-            </div>
-
-            <p class="text-gray-300 leading-8">
-              Building backend services and distributed
-              processing systems for AI context generation
-              pipelines, video ingestion and inference workflows.
-            </p>
-
-          </div>
-
-        </div>
-
-        <!-- ITEM -->
-
-        <div class="relative mb-16">
-
-          <div
-            class="absolute left-[-56px] top-2 w-8 h-8 rounded-full bg-purple-400">
-          </div>
-
-          <div class="glass rounded-[32px] p-10 card">
-
-            <div
-              class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-
-              <div>
-
-                <h3 class="text-3xl font-bold">
-                  Software Engineer
-                </h3>
-
-                <p class="text-cyan-300 mt-2">
-                  Samsung R&D Institute Delhi
-                </p>
-
-              </div>
-
-              <span
-                class="text-gray-400 text-sm">
-
-                July 2022 - Feb 2026
-
-              </span>
-
-            </div>
-
-            <p class="text-gray-300 leading-8">
-              Redesigned distributed indexing platform,
-              implemented sharding architecture,
-              migrated systems to AWS serverless infrastructure
-              and modernized backend modules from Java 8 to Java 17.
-            </p>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </section>
-
-  <!-- SKILLS -->
-
-  <section id="skills" class="py-32 px-6">
-
-    <div class="max-w-7xl mx-auto">
-
-      <div class="mb-20">
-
-        <p class="uppercase tracking-[6px] text-cyan-300 mb-4">
-          Core Skills
-        </p>
-
-        <h2 class="text-5xl font-black">
-
-          Technology
-          <span class="gradient-text">
-            Stack
-          </span>
-
-        </h2>
-
-      </div>
-
-      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-
-        <div class="glass rounded-[32px] p-10 card">
-
-          <h3 class="text-2xl font-bold mb-8">
-            Languages
-          </h3>
-
-          <div class="space-y-4 text-gray-300">
-            <p>Java</p>
-            <p>Python</p>
-            <p>C++</p>
-            <p>Bash</p>
-          </div>
-
-        </div>
-
-        <div class="glass rounded-[32px] p-10 card">
-
-          <h3 class="text-2xl font-bold mb-8">
-            Backend
-          </h3>
-
-          <div class="space-y-4 text-gray-300">
-            <p>Spring Boot</p>
-            <p>Hibernate</p>
-            <p>REST APIs</p>
-            <p>Microservices</p>
-          </div>
-
-        </div>
-
-        <div class="glass rounded-[32px] p-10 card">
-
-          <h3 class="text-2xl font-bold mb-8">
-            AWS Cloud
-          </h3>
-
-          <div class="space-y-4 text-gray-300">
-            <p>Lambda</p>
-            <p>SQS / SNS</p>
-            <p>ECS</p>
-            <p>S3 / RDS</p>
-          </div>
-
-        </div>
-
-        <div class="glass rounded-[32px] p-10 card">
-
-          <h3 class="text-2xl font-bold mb-8">
-            Concepts
-          </h3>
-
-          <div class="space-y-4 text-gray-300">
-            <p>Concurrency</p>
-            <p>Multithreading</p>
-            <p>Lock-Free Systems</p>
-            <p>System Design</p>
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </section>
-
-  <!-- CONTACT -->
-
-  <section id="contact" class="py-32 px-6">
-
-    <div class="max-w-5xl mx-auto">
-
-      <div class="glass rounded-[40px] p-16 text-center">
-
-        <p class="uppercase tracking-[6px] text-cyan-300 mb-5">
-          Contact
-        </p>
-
-        <h2 class="text-5xl font-black mb-8">
-
-          Building Systems <br>
-
-          <span class="gradient-text">
-            That Scale
-          </span>
-
-        </h2>
-
-        <p
-          class="text-gray-300 text-lg leading-9 max-w-3xl mx-auto mb-12">
-
-          Open to backend engineering,
-          distributed systems and platform engineering
-          opportunities in product-based companies.
-
-        </p>
-
-        <div class="flex flex-wrap justify-center gap-6">
-
-          <a href="mailto:prajapatiprashant639@gmail.com"
-            class="px-8 py-4 rounded-2xl bg-cyan-300 text-black font-bold hover:scale-105 transition">
-
-            Email
-
-          </a>
-
-          <a href="https://www.linkedin.com/in/prashant-prajapati86/"
-            target="_blank"
-            class="px-8 py-4 rounded-2xl glass border border-white/10 hover:border-cyan-300 transition">
-
-            LinkedIn
-
-          </a>
-
-          <a href="https://github.com/prashantp86/"
-            target="_blank"
-            class="px-8 py-4 rounded-2xl glass border border-white/10 hover:border-cyan-300 transition">
-
-            GitHub
-
-          </a>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </section>
-
-  <!-- FOOTER -->
-
-  <footer
-    class="border-t border-white/5 py-10 text-center text-gray-500 text-sm">
-
-    Designed & Engineered by Prashant Prajapati
-
-  </footer>
-
+    </a>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  Built with <span>precision</span> · Prashant Prajapati · <span>2026</span>
+</footer>
+
+<script>
+/* ── CURSOR ─────────────────────────────────────── */
+const cursor = document.getElementById('cursor');
+const ring   = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx+'px'; cursor.style.top = my+'px'; });
+(function animRing(){ rx += (mx-rx)*0.12; ry += (my-ry)*0.12; ring.style.left = rx+'px'; ring.style.top = ry+'px'; requestAnimationFrame(animRing); })();
+document.querySelectorAll('a,button,.tech-pill,.concept-cell').forEach(el=>{
+  el.addEventListener('mouseenter', ()=>{ ring.style.width='50px'; ring.style.height='50px'; ring.style.borderColor='rgba(0,229,255,0.8)'; });
+  el.addEventListener('mouseleave', ()=>{ ring.style.width='32px'; ring.style.height='32px'; ring.style.borderColor='rgba(0,229,255,0.5)'; });
+});
+
+/* ── CANVAS PARTICLES ────────────────────────────── */
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+let W, H;
+function resize(){ W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+resize(); window.addEventListener('resize', resize);
+
+class Particle {
+  constructor(){
+    this.x = Math.random()*W;
+    this.y = Math.random()*H;
+    this.vx = (Math.random()-.5)*0.3;
+    this.vy = (Math.random()-.5)*0.3;
+    this.r  = Math.random()*1.5+0.5;
+    this.alpha = Math.random()*0.4+0.1;
+    this.pulse = Math.random()*Math.PI*2;
+  }
+  update(){
+    this.x += this.vx; this.y += this.vy;
+    this.pulse += 0.02;
+    if(this.x<0) this.x=W; if(this.x>W) this.x=0;
+    if(this.y<0) this.y=H; if(this.y>H) this.y=0;
+  }
+  draw(){
+    const a = this.alpha*(0.7+0.3*Math.sin(this.pulse));
+    ctx.beginPath(); ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
+    ctx.fillStyle = `rgba(0,229,255,${a})`; ctx.fill();
+  }
+}
+
+const pts = Array.from({length:120}, ()=>new Particle());
+const MAX_DIST = 120;
+
+function drawFrame(){
+  ctx.clearRect(0,0,W,H);
+  pts.forEach(p=>{p.update();p.draw();});
+  for(let i=0;i<pts.length;i++){
+    for(let j=i+1;j<pts.length;j++){
+      const dx=pts[i].x-pts[j].x, dy=pts[i].y-pts[j].y;
+      const d=Math.sqrt(dx*dx+dy*dy);
+      if(d<MAX_DIST){
+        ctx.beginPath();
+        ctx.moveTo(pts[i].x,pts[i].y);
+        ctx.lineTo(pts[j].x,pts[j].y);
+        const a=(1-d/MAX_DIST)*0.12;
+        ctx.strokeStyle=`rgba(0,229,255,${a})`; ctx.lineWidth=.5; ctx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(drawFrame);
+}
+drawFrame();
+
+/* ── TYPING ANIMATION ────────────────────────────── */
+const phrases = [
+  'Lead Software Engineer @ Samsung R&D Institute India · Delhi',
+  'Distributed Systems Architect',
+  'Cloud-Native Builder (AWS)',
+  '$1M+ Cost Savings Delivered',
+  'High-Throughput Pipeline Engineer',
+];
+let pi=0, ci=0, deleting=false;
+const el = document.getElementById('typed');
+function type(){
+  const ph = phrases[pi];
+  if(!deleting){
+    el.textContent = ph.slice(0,++ci);
+    if(ci===ph.length){ setTimeout(()=>{deleting=true; setTimeout(type,1800);},100); return; }
+  } else {
+    el.textContent = ph.slice(0,--ci);
+    if(ci===0){ deleting=false; pi=(pi+1)%phrases.length; }
+  }
+  setTimeout(type, deleting?40:70);
+}
+setTimeout(type, 1600);
+
+/* ── SCROLL REVEAL ───────────────────────────────── */
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); } });
+},{threshold:0.12});
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>{
+  obs.observe(el);
+  /* stagger siblings */
+  const parent = el.parentElement;
+  const siblings = [...parent.children].filter(c=>c.classList.contains('reveal')||c.classList.contains('reveal-left')||c.classList.contains('reveal-right'));
+  const idx = siblings.indexOf(el);
+  el.style.transitionDelay = (idx*0.08)+'s';
+});
+
+/* ── STAT COUNTERS ───────────────────────────────── */
+const counterObs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      animateCounter(e.target);
+      counterObs.unobserve(e.target);
+    }
+  });
+},{threshold:0.5});
+document.querySelectorAll('.stat-num').forEach(el=>counterObs.observe(el));
+
+function animateCounter(el){
+  const target = +el.dataset.target;
+  const prefix = el.dataset.prefix||'';
+  const suffix = el.dataset.suffix||'';
+  const dur = 2000;
+  const start = performance.now();
+  function frame(now){
+    const t = Math.min((now-start)/dur,1);
+    const ease = t<0.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2;
+    const val = Math.round(ease*target);
+    const fmt = target>=10000 ? formatBig(val) : val;
+    el.textContent = prefix+fmt+suffix;
+    if(t<1) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+function formatBig(n){
+  if(n>=1000000) return (n/1000000).toFixed(1)+'M';
+  if(n>=1000) return (n/1000).toFixed(0)+'K';
+  return n;
+}
+
+/* ── SKILL BARS ──────────────────────────────────── */
+const barObs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.querySelectorAll('.skill-bar-fill').forEach((bar,i)=>{
+        setTimeout(()=>{ bar.style.width = bar.dataset.w+'%'; }, i*120);
+      });
+      barObs.unobserve(e.target);
+    }
+  });
+},{threshold:0.3});
+const skillSection = document.getElementById('skillBars');
+if(skillSection) barObs.observe(skillSection);
+
+/* ── PROJECT CARD MOUSE GLOW ─────────────────────── */
+document.querySelectorAll('.project-card').forEach(card=>{
+  card.addEventListener('mousemove', e=>{
+    const r = card.getBoundingClientRect();
+    card.style.setProperty('--mx', ((e.clientX-r.left)/r.width*100)+'%');
+    card.style.setProperty('--my', ((e.clientY-r.top)/r.height*100)+'%');
+  });
+});
+</script>
 </body>
-
 </html>
